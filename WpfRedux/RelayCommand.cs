@@ -7,19 +7,20 @@ namespace WpfRedux
     /// <summary>
     /// From http://msdn.microsoft.com/en-us/magazine/dd419663.aspx
     /// </summary>
-    class RelayCommand<T> : ICommand
+    class RelayCommand : ICommand
     {
-        readonly Action<T> _execute;
-        readonly Predicate<T> _canExecute;
+        private readonly Action<object> _execute;
+        private readonly Predicate<object> _canExecute;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand"/> class.
         /// </summary>
         /// <param name="execute">The method to be called when the command is 
         /// invoked.</param>
-        public RelayCommand(Action<T> execute)
+        public RelayCommand(Action<object> execute)
             : this(execute, null)
-        { }
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand"/> class.
@@ -28,10 +29,10 @@ namespace WpfRedux
         /// invoked.</param>
         /// <param name="canExecute">the method that determines whether the command 
         /// can execute in its current state.</param>
-        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
             if (execute == null)
-                throw new ArgumentNullException("execute");
+                throw new ArgumentNullException(nameof(execute));
 
             _execute = execute;
             _canExecute = canExecute;
@@ -49,7 +50,7 @@ namespace WpfRedux
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null || _canExecute((T)parameter);
+            return _canExecute == null || _canExecute(parameter);
         }
 
         /// <summary>
@@ -67,6 +68,6 @@ namespace WpfRedux
         /// </summary>
         /// <param name="parameter">Data used by the command.  If the command does 
         /// not require data to be passed, this object can be set to null.</param>
-        public void Execute(object parameter) => _execute((T)parameter);
+        public void Execute(object parameter) => _execute(parameter);
     }
 }

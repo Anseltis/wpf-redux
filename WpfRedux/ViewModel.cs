@@ -6,6 +6,7 @@ namespace WpfRedux
     public class ViewModel : INotifyPropertyChanged
     {
         private Store _store;
+        private Reducer _reducer;
 
         public event PropertyChangedEventHandler PropertyChanged;        
         public string Text => _store.State.Text;
@@ -14,7 +15,8 @@ namespace WpfRedux
         public ViewModel(Store store)
         {
             _store = store;
-            UpdateTextCommand = new RelayCommand<string>(UpdateText);
+            _reducer = new Reducer();
+            UpdateTextCommand = new RelayActionCommand<string, Action>(text => new Action(text), _store.Dispatch);
             store.StateChanged += ChangeState;            
         }                
 
@@ -30,12 +32,6 @@ namespace WpfRedux
             {
                 OnPropertyChanged(nameof(Text));
             }
-        }
-
-        private void UpdateText(string text)
-        {
-            var reducer = new Reducer(text);
-            _store.Dispatch(reducer);
         }
     }
 }

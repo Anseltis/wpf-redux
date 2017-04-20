@@ -55,8 +55,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Action.cs" />
     <Compile Include="ChangeStateArgs.cs" />
     <Compile Include="Reducer.cs" />
+    <Compile Include="RelayActionCommand.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Store.cs" />
