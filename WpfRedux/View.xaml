@@ -18,6 +18,7 @@
         </Grid.RowDefinitions>
         <TextBox Grid.Row="0" Grid.Column="0" Text="{Binding Text, Mode=OneWay}" Name="Text"/>
         <Button Grid.Row="0" Grid.Column="1" Content="Update" Command="{Binding UpdateTextCommand}" CommandParameter="{Binding Text, ElementName=Text}"/>
-        <Label Grid.Row="1" Grid.Column="0" Content="{Binding Text}"  />        
+        <Label Grid.Row="1" Grid.Column="0" Content="{Binding Text}"  />
+        <Button Grid.Row="1" Grid.Column="1" Content="Undo" Command="{Binding UndoCommand}"/>
     </Grid>
 </Window>
