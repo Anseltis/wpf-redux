@@ -5,31 +5,25 @@ namespace WpfRedux
 {
     public class ViewModel : INotifyPropertyChanged
     {
+        private Store _store;
+
+        public event PropertyChangedEventHandler PropertyChanged;        
+        public string Text => _store.State.Text;
+        public ICommand UpdateTextCommand { get; }
+
         public ViewModel(Store store)
         {
             _store = store;
-            store.StateChanged += ChangeState;
-
-            UpdateTextCommand = new RelayCommand(UpdateText);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
+            UpdateTextCommand = new RelayCommand<string>(UpdateText);
+            store.StateChanged += ChangeState;            
+        }                
 
         private void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private Store _store;
-
-        public string Text
-        {
-            get { return _store.State.Text; }
-        }
-
-        public ICommand UpdateTextCommand { get; }
-
+        
         public void ChangeState(object sender, ChangeStateArgs args)
         {
             if(args?.OldState?.Text != args?.NewState?.Text)
@@ -38,9 +32,8 @@ namespace WpfRedux
             }
         }
 
-        private void UpdateText(object param)
+        private void UpdateText(string text)
         {
-            var text = (string)param;
             var reducer = new Reducer(text);
             _store.Dispatch(reducer);
         }

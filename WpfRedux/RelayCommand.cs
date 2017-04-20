@@ -7,17 +7,17 @@ namespace WpfRedux
     /// <summary>
     /// From http://msdn.microsoft.com/en-us/magazine/dd419663.aspx
     /// </summary>
-    class RelayCommand : ICommand
+    class RelayCommand<T> : ICommand
     {
-        readonly Action<object> _execute;
-        readonly Predicate<object> _canExecute;
+        readonly Action<T> _execute;
+        readonly Predicate<T> _canExecute;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand"/> class.
         /// </summary>
         /// <param name="execute">The method to be called when the command is 
         /// invoked.</param>
-        public RelayCommand(Action<object> execute)
+        public RelayCommand(Action<T> execute)
             : this(execute, null)
         { }
 
@@ -28,7 +28,7 @@ namespace WpfRedux
         /// invoked.</param>
         /// <param name="canExecute">the method that determines whether the command 
         /// can execute in its current state.</param>
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
             if (execute == null)
                 throw new ArgumentNullException("execute");
@@ -49,7 +49,7 @@ namespace WpfRedux
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null || _canExecute(parameter);
+            return _canExecute == null || _canExecute((T)parameter);
         }
 
         /// <summary>
@@ -67,6 +67,6 @@ namespace WpfRedux
         /// </summary>
         /// <param name="parameter">Data used by the command.  If the command does 
         /// not require data to be passed, this object can be set to null.</param>
-        public void Execute(object parameter) => _execute(parameter);
+        public void Execute(object parameter) => _execute((T)parameter);
     }
 }

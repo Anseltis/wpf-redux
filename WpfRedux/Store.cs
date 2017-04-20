@@ -4,7 +4,14 @@ namespace WpfRedux
 {
     public class Store
     {
-        public State State { get; private set; } = new State("");
+        public State State { get; private set; }
+
+        public Store(State intitialState)
+        {
+            State = intitialState;
+        }
+
+        public event EventHandler<ChangeStateArgs> StateChanged;
 
         public void Dispatch(Reducer reducer)
         {
@@ -13,8 +20,6 @@ namespace WpfRedux
 
             var handler = StateChanged;
             handler?.Invoke(this, new ChangeStateArgs(oldState, State));
-        }
-
-        public event EventHandler<ChangeStateArgs> StateChanged;
+        }        
     }
 }

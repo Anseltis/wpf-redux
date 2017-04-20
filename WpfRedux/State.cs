@@ -2,11 +2,7 @@
 {
     public class State
     {
-        public string Text { get; set; }
-
-        public State()
-        {
-        }
+        public string Text { get; }
 
         public State(string text)
         {

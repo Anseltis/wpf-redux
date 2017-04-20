@@ -10,7 +10,7 @@ namespace WpfRedux
         public View()
         {
             InitializeComponent();
-            var store = new Store();
+            var store = new Store(new State(""));
             DataContext = new ViewModel(store);
         }
     }
